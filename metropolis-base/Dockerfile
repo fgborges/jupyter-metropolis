@@ -191,9 +191,6 @@ RUN cpanm Devel::IPerl --notest \
     && cpanm --local-lib=~/perl5 local::lib && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
     && iperl --version
 
-USER root
-RUN dnf install -y 
-USER jovyan
 RUN pip3 install --user PySingular jupyter_kernel_singular
 
 RUN git clone --depth=1 git://github.com/mattn/vim_kernel \
