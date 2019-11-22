@@ -150,6 +150,10 @@ RUN ihaskell install --stack
 FROM fedora:31 as nodejs
 RUN dnf install -y @c-development @development-tools zeromq-devel python3-notebook
 RUN dnf install -y npm zeromq
+RUN useradd -m jovyan
+USER jovyan
+WORKDIR /home/jovyan
+ENV USER=jovyan HOME=/home/jovyan PATH=/home/jovyan/.local/bin:$PATH LANG=C.UTF-8
 RUN npm config set prefix $HOME/node_modules \
     && npm install -g tslab \
     && $HOME/node_modules/bin/tslab install
@@ -316,7 +320,7 @@ COPY --chown=jovyan:jovyan --from=elixir /home/jovyan/.mix/ $HOME/.mix/
 COPY --chown=jovyan:jovyan --from=elixir /home/jovyan/IElixir/ $HOME/IElixir/
 COPY --chown=jovyan:jovyan --from=elixir /home/jovyan/.local/ $HOME/.local/
 
-COPY --chown=jovyan:jovyan --from=julia /home/jovyan/.julia $HOME/.julia
+COPY --chown=jovyan:jovyan --from=julia /home/jovyan/.julia/ $HOME/.julia/
 COPY --chown=jovyan:jovyan --from=julia /home/jovyan/.local/ $HOME/.local/
 
 COPY --chown=jovyan:jovyan --from=common-lisp /home/jovyan/quicklisp/ $HOME/quicklisp/
