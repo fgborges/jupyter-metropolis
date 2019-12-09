@@ -193,7 +193,7 @@ RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc \
     && dnf install -y \
         julia \
         java-11-openjdk-devel \
-        dotnet-sdk-3.0 \
+        dotnet-sdk-3.1 \
         sagemath \
         npm \
         cargo \
@@ -246,8 +246,8 @@ ENV USER=jovyan HOME=/home/jovyan PATH=/home/jovyan/.local/bin:$PATH LANG=C.UTF-
 RUN mkdir -p $HOME/.local/bin $HOME/.local/share/jupyter/kernels
 
 ENV PATH=$HOME/.dotnet/tools:$PATH
-RUN dotnet tool install -g dotnet-try \
-    && dotnet try jupyter install
+RUN dotnet tool install -g dotnet-interactive --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json" \
+    && dotnet interactive jupyter install
 
 RUN pip3 install --user coq-jupyter \
     && python3 -m coq_jupyter.install
